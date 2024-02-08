@@ -1,23 +1,65 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import "./App.css";
+import { ethers } from "ethers";
+import { ItemType } from "@opensea/seaport-js/lib/constants";
+import { SeaportPlayground } from "./lib/seaport";
 
 function App() {
+  const [order, setOrder] = useState<any>();
+
   return (
     <div className="App">
       <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={async () => {
+            const sp = await SeaportPlayground.init();
+            console.log("offerer", sp.address);
+
+            const { order, orderHash } = await sp.createOffChainOrder({
+              offer: [
+                {
+                  itemType: ItemType.ERC721,
+                  token: "0x09a473439deB547fAc88d5655fb69e000D2efe5A",
+                  identifier:
+                    "2218958502915401787612776207602548135263838775715842798634660580556841",
+                },
+              ],
+              consideration: [
+                {
+                  amount: ethers.parseEther("2").toString(),
+                  recipient: sp.address,
+                },
+              ],
+            });
+
+            console.log("order", order);
+            // const hash = sp.seaport.getOrderHash(order.parameters);
+            console.log("orderHash", orderHash);
+            //await seaport.validate([order]).transact();
+            // await sp.seaport.cancelOrders([order.parameters]).transact();
+            setOrder(order);
+          }}
         >
-          Learn React
-        </a>
+          Offer
+        </button>
+        <button
+          onClick={async () => {
+            if (!order) return;
+            const sp = await SeaportPlayground.init();
+            console.log("fulfiller", sp.address);
+
+            const fulfillResult = await sp.seaport.fulfillOrder({
+              order,
+              accountAddress: sp.address,
+            });
+
+            console.log("actions", fulfillResult.actions);
+            const transaction = await fulfillResult.executeAllActions();
+            console.log("transaction", transaction);
+          }}
+        >
+          Fulfill
+        </button>
       </header>
     </div>
   );
