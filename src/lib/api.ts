@@ -16,5 +16,9 @@ export function useKvApi() {
       (key, extra: { arg: { key: string; value: string } }) =>
         KvApi.writeKeyValue(extra.arg.key, extra.arg.value)
     ),
+    delete: useSWRMutation(
+      `kv/deleteKey`,
+      (key, extra: { arg: { key: string } }) => KvApi.deleteKey(extra.arg.key)
+    ),
   };
 }

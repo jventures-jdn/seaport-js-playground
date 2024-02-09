@@ -13,12 +13,22 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        {kvApi.all.data && <pre>{JSON.stringify(kvApi.all.data)}</pre>}
         <Button
           onClick={async () => {
             await kvApi.write.trigger({ key: "test", value: "test" });
+            await kvApi.all.mutate();
           }}
         >
           Test write KV
+        </Button>
+        <Button
+          onClick={async () => {
+            await kvApi.delete.trigger({ key: "test" });
+            await kvApi.all.mutate();
+          }}
+        >
+          Test delete KV
         </Button>
         <Button
           onClick={async () => {

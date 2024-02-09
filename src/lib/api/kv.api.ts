@@ -13,4 +13,11 @@ export class KvApi {
     });
     return response.json();
   }
+
+  static async deleteKey(key: string) {
+    const response = await fetch(`${KvApi.URL}/data/${key}`, {
+      method: "DELETE",
+    });
+    return response.json();
+  }
 }
