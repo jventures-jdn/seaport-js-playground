@@ -3,6 +3,7 @@ import "./App.css";
 import { ethers } from "ethers";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { SeaportPlayground } from "./lib/seaport";
+import { Button } from "antd";
 
 function App() {
   const [order, setOrder] = useState<any>();
@@ -10,7 +11,7 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        <button
+        <Button
           onClick={async () => {
             const sp = await SeaportPlayground.init();
             console.log("offerer", sp.address);
@@ -41,8 +42,8 @@ function App() {
           }}
         >
           Offer
-        </button>
-        <button
+        </Button>
+        <Button
           onClick={async () => {
             if (!order) return;
             const sp = await SeaportPlayground.init();
@@ -59,7 +60,7 @@ function App() {
           }}
         >
           Fulfill
-        </button>
+        </Button>
       </header>
     </div>
   );
