@@ -4,13 +4,22 @@ import { ethers } from "ethers";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { SeaportPlayground } from "./lib/seaport";
 import { Button } from "antd";
+import { useApi } from "./lib/api";
 
 function App() {
   const [order, setOrder] = useState<any>();
+  const kvApi = useApi().kv();
 
   return (
     <div className="App">
       <header className="App-header">
+        <Button
+          onClick={async () => {
+            await kvApi.write.trigger({ key: "test", value: "test" });
+          }}
+        >
+          Test write KV
+        </Button>
         <Button
           onClick={async () => {
             const sp = await SeaportPlayground.init();
