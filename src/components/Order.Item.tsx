@@ -21,6 +21,6 @@ export function OrderItem(props: {
           nft.contractAddress === item.token
       );
     }
-  }, [item]);
+  }, [item, raw.nfts]);
   return <div>{nft && <OrderItemNft orderKey={orderKey} nft={nft} />}</div>;
 }
