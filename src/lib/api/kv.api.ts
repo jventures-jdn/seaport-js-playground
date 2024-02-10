@@ -1,3 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+import useSWR from "swr/immutable";
+import useSWRMutation from "swr/mutation";
+import { mutate } from "swr";
+
 export class KvApi {
   static URL = "https://seaport-playground.jfin.workers.dev";
 
@@ -20,4 +25,35 @@ export class KvApi {
     });
     return response.json();
   }
+}
+
+export function useKvApi() {
+  return {
+    all: () =>
+      useSWR<Record<string, string>>("kv/allKeyValues", KvApi.allKeyValues),
+    write: useSWRMutation(
+      `kv/write`,
+      (key, extra: { arg: { key: string; value: any } }) =>
+        KvApi.writeKeyValue(
+          extra.arg.key,
+          typeof extra.arg.value === "string"
+            ? extra.arg.value
+            : JSON.stringify(extra.arg.value)
+        ),
+      {
+        onSuccess: () => {
+          mutate("kv/allKeyValues");
+        },
+      }
+    ),
+    delete: useSWRMutation(
+      `kv/delete`,
+      (key, extra: { arg: { key: string } }) => KvApi.deleteKey(extra.arg.key),
+      {
+        onSuccess: () => {
+          mutate("kv/allKeyValues");
+        },
+      }
+    ),
+  };
 }
