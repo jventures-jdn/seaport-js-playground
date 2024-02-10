@@ -3,7 +3,7 @@ import { useOrder } from "../lib/orders";
 import { ConsiderationItem, OfferItem } from "@opensea/seaport-js/lib/types";
 import { ethers } from "ethers";
 import { Blockchain } from "../lib/blockchain";
-import { Flex, Tag } from "antd";
+import { Tag } from "antd";
 
 export function OrderItemNative(props: {
   orderKey: string;

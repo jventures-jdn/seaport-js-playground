@@ -18,18 +18,15 @@ function App() {
           await orders.submit(({ offerer }) => ({
             offer: [
               {
-                itemType: ItemType.ERC721,
-                token: "0x09a473439deB547fAc88d5655fb69e000D2efe5A",
-                identifier:
-                  "2218958502915401787612776207602548135263838775715842798634660580556841",
-              },
-              {
                 amount: ethers.parseEther("1").toString(),
               },
             ],
             consideration: [
               {
-                amount: ethers.parseEther("2").toString(),
+                itemType: ItemType.ERC721,
+                token: "0x09a473439deB547fAc88d5655fb69e000D2efe5A",
+                identifier:
+                  "2218958502915401787612776207602548135263838775715842798634660580556841",
                 recipient: offerer,
               },
             ],
