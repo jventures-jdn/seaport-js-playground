@@ -1,5 +1,4 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { mutate } from "swr";
 import useSWR from "swr/immutable";
 
 export class HNftPublicApi {

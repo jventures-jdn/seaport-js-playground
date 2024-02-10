@@ -1,13 +1,10 @@
-import React, { useState } from "react";
 import { ethers } from "ethers";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
-import { SeaportPlayground } from "./lib/seaport";
 import { Button } from "antd";
 import { Orders } from "./components/Orders";
 import { useOrders } from "./lib/orders";
 
 function App() {
-  const [order, setOrder] = useState<any>();
   const orders = useOrders();
 
   return (
@@ -38,7 +35,7 @@ function App() {
       >
         Create
       </Button>
-      <Button
+      {/* <Button
         onClick={async () => {
           if (!order) return;
           const sp = await SeaportPlayground.init();
@@ -55,7 +52,7 @@ function App() {
         }}
       >
         Fulfill
-      </Button>
+      </Button> */}
     </div>
   );
 }
