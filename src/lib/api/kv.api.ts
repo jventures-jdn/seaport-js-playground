@@ -2,6 +2,7 @@
 import useSWR from "swr/immutable";
 import useSWRMutation from "swr/mutation";
 import { mutate } from "swr";
+import { OrderDataValue } from "../types";
 
 export class KvApi {
   static URL = "https://seaport-playground.jfin.workers.dev";
@@ -33,7 +34,7 @@ export function useKvApi() {
       useSWR<Record<string, string>>("kv/allKeyValues", KvApi.allKeyValues),
     write: useSWRMutation(
       `kv/write`,
-      (key, extra: { arg: { key: string; value: any } }) =>
+      (key, extra: { arg: { key: string; value: OrderDataValue } }) =>
         KvApi.writeKeyValue(
           extra.arg.key,
           typeof extra.arg.value === "string"

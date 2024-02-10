@@ -56,4 +56,25 @@ export class NftHelper {
     // case default
     return imageUrl;
   }
+
+  static nftTokenUrl(
+    chainId: string,
+    contractAddress: string,
+    tokenId: string
+  ) {
+    switch (chainId) {
+      case "1":
+        return `https://etherscan.io/nft/${contractAddress}/${tokenId}`;
+      case "56":
+        return `https://bscscan.com/nft/${contractAddress}/${tokenId}`;
+      case "137":
+        return `https://polygonscan.com/nft/${contractAddress}/${tokenId}`;
+      case "10":
+        return `https://optimistic.etherscan.io/token/${contractAddress}?a=${tokenId}`;
+      case "3501":
+        return `https://jfinscan.com/token/${contractAddress}/instance/${tokenId}`;
+      case "3502":
+        return `https://testnet.jfinscan.com/token/${contractAddress}/instance/${tokenId}`;
+    }
+  }
 }

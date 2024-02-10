@@ -3,6 +3,8 @@ import { useOrder } from "../lib/orders";
 import { useState } from "react";
 import { OrderDeleteButton } from "./Order.Delete.Button";
 import { OrderRaw } from "./Order.Raw";
+import { OrderOffers } from "./Order.Offers";
+import { OrderConsiderations } from "./Order.Considerations";
 
 export function Order(props: { orderKey: string }) {
   const { orderKey } = props;
@@ -28,6 +30,14 @@ export function Order(props: { orderKey: string }) {
             tab: "Overview",
           },
           {
+            key: "offers",
+            tab: "Offers",
+          },
+          {
+            key: "considerations",
+            tab: "Considerations",
+          },
+          {
             key: "raw",
             tab: "Raw",
           },
@@ -39,6 +49,10 @@ export function Order(props: { orderKey: string }) {
         activeTabKey={activeTabKey}
         onTabChange={setActiveTabKey}
       >
+        {activeTabKey === "offers" && <OrderOffers orderKey={orderKey} />}
+        {activeTabKey === "considerations" && (
+          <OrderConsiderations orderKey={orderKey} />
+        )}
         {activeTabKey === "raw" && <OrderRaw orderKey={orderKey} />}
         {activeTabKey === "manage" && <OrderDeleteButton orderKey={orderKey} />}
       </Card>

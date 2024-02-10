@@ -56,7 +56,7 @@ export class Offer {
       case "56":
         return "bsc";
       case "137":
-        return "matic";
+        return "polygon";
       case "10":
         return "optimism";
       case "3501":

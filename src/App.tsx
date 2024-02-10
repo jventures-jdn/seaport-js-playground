@@ -36,7 +36,7 @@ function App() {
           }));
         }}
       >
-        Offer
+        Create
       </Button>
       <Button
         onClick={async () => {

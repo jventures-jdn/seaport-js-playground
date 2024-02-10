@@ -4,6 +4,7 @@ import useSWR from "swr/immutable";
 import { useApi } from "./api";
 import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { Offer } from "./offer";
+import { OrderDataValue } from "./types";
 
 export function useOrders() {
   const kvApi = useApi().kv();
@@ -57,7 +58,7 @@ export function useOrders() {
 
 export function useOrder(orderKey: string) {
   const orders = useOrders();
-  const raw = useMemo(
+  const raw = useMemo<OrderDataValue>(
     () => orders.orders?.find((o) => o.key === orderKey)?.value,
     [orderKey, orders]
   );
