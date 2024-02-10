@@ -3,31 +3,22 @@ import { ethers } from "ethers";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { SeaportPlayground } from "./lib/seaport";
 import { Button } from "antd";
-import { useApi } from "./lib/api";
 import { Orders } from "./components/Orders";
+import { useOrders } from "./lib/orders";
 
 function App() {
   const [order, setOrder] = useState<any>();
-  const kvApi = useApi().kv();
+  const orders = useOrders();
 
   return (
     <div>
-      <Orders />
+      <div style={{ padding: 20 }}>
+        <Orders />
+      </div>
       <Button
+        loading={orders.submitting}
         onClick={async () => {
-          try {
-            await SeaportPlayground.init();
-          } catch {}
-        }}
-      >
-        Init
-      </Button>
-      <Button
-        onClick={async () => {
-          const sp = await SeaportPlayground.init();
-          console.log("offerer", sp.address);
-
-          const { order, orderHash } = await sp.createOffChainOrder({
+          await orders.submit(({ offerer }) => ({
             offer: [
               {
                 itemType: ItemType.ERC721,
@@ -39,19 +30,10 @@ function App() {
             consideration: [
               {
                 amount: ethers.parseEther("2").toString(),
-                recipient: sp.address,
+                recipient: offerer,
               },
             ],
-          });
-
-          await kvApi.write.trigger({ key: orderHash, value: order });
-
-          console.log("order", order);
-          // const hash = sp.seaport.getOrderHash(order.parameters);
-          console.log("orderHash", orderHash);
-          //await seaport.validate([order]).transact();
-          // await sp.seaport.cancelOrders([order.parameters]).transact();
-          setOrder(order);
+          }));
         }}
       >
         Offer

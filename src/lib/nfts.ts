@@ -1,8 +1,22 @@
 import * as isIPFS from "is-ipfs";
+import { mutate } from "swr";
+import { HNftPublicApi } from "./api/hnft.public.api";
 
 export function useNft() {}
 
 export class NftHelper {
+  static cacheTokenData(
+    blockchain: string,
+    contract_address: string,
+    token_id: string,
+    data: Record<string, string>
+  ) {
+    mutate(
+      HNftPublicApi.TOKEN_DATA_KEY(blockchain, contract_address, token_id),
+      data
+    );
+  }
+
   static nftImageUrl(imageUrl?: string) {
     if (!imageUrl) return;
 

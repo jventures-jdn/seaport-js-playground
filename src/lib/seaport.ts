@@ -8,10 +8,15 @@ export class SeaportPlayground {
     const signer = await new ethers.BrowserProvider(_provider).getSigner();
     const seaport = new Seaport(signer);
     const address = await signer.getAddress();
-    return new SeaportPlayground(seaport, address);
+    const chainId = signer.provider._network.chainId.toString();
+    return new SeaportPlayground(seaport, address, chainId);
   }
 
-  private constructor(readonly seaport: Seaport, readonly address: string) {}
+  private constructor(
+    readonly seaport: Seaport,
+    readonly address: string,
+    readonly chainId: string
+  ) {}
 
   async createOffChainOrder(order: CreateOrderInput) {
     const { executeAllActions } = await this.seaport.createOrder(
