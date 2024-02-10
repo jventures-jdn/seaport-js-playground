@@ -1,10 +1,11 @@
-import { Card } from "antd";
+import { Badge, Card } from "antd";
 import { useOrder } from "../lib/orders";
 import { useState } from "react";
 import { OrderDeleteButton } from "./Order.Delete.Button";
 import { OrderRaw } from "./Order.Raw";
 import { OrderOffers } from "./Order.Offers";
 import { OrderConsiderations } from "./Order.Considerations";
+import { Blockchain } from "../lib/blockchain";
 
 export function Order(props: { orderKey: string }) {
   const { orderKey } = props;
@@ -13,7 +14,13 @@ export function Order(props: { orderKey: string }) {
   const [activeTabKey, setActiveTabKey] = useState<string>("overview");
   if (!order) return null;
   return (
-    <div>
+    <Badge.Ribbon
+      style={{ textTransform: "capitalize" }}
+      text={
+        Blockchain.chainIdToNetworkName(raw.chainId)?.split("_").join(" ") ||
+        raw.chainId
+      }
+    >
       <Card
         style={{ width: "100%" }}
         title={
@@ -56,6 +63,6 @@ export function Order(props: { orderKey: string }) {
         {activeTabKey === "raw" && <OrderRaw orderKey={orderKey} />}
         {activeTabKey === "manage" && <OrderDeleteButton orderKey={orderKey} />}
       </Card>
-    </div>
+    </Badge.Ribbon>
   );
 }

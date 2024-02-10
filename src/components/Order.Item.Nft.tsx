@@ -3,6 +3,7 @@ import { NftHelper } from "../lib/nfts";
 import { ImageFallback } from "../ui-kit/ImageFallback";
 import { useOrder } from "../lib/orders";
 import { NftTokenData } from "../lib/types";
+import { Blockchain } from "../lib/blockchain";
 
 export function OrderItemNft(props: { orderKey: string; nft: NftTokenData }) {
   const { orderKey, nft } = props;
@@ -13,7 +14,7 @@ export function OrderItemNft(props: { orderKey: string; nft: NftTokenData }) {
       style={{ width: 180 }}
       onClick={() => {
         window.open(
-          NftHelper.nftTokenUrl(raw.chainId, nft.contractAddress, nft.tokenId),
+          Blockchain.nftTokenUrl(raw.chainId, nft.contractAddress, nft.tokenId),
           "_blank"
         );
       }}

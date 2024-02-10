@@ -3,6 +3,7 @@ import { ConsiderationItem, OfferItem } from "@opensea/seaport-js/lib/types";
 import { useOrder } from "../lib/orders";
 import { useMemo } from "react";
 import { OrderItemNft } from "./Order.Item.Nft";
+import { OrderItemNative } from "./Order.Item.Native";
 
 export function OrderItem(props: {
   orderKey: string;
@@ -22,5 +23,12 @@ export function OrderItem(props: {
       );
     }
   }, [item, raw.nfts]);
-  return <div>{nft && <OrderItemNft orderKey={orderKey} nft={nft} />}</div>;
+  return (
+    <div>
+      {nft && <OrderItemNft orderKey={orderKey} nft={nft} />}
+      {item.itemType === ItemType.NATIVE && (
+        <OrderItemNative orderKey={orderKey} item={item} />
+      )}
+    </div>
+  );
 }

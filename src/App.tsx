@@ -23,6 +23,9 @@ function App() {
                 identifier:
                   "2218958502915401787612776207602548135263838775715842798634660580556841",
               },
+              {
+                amount: ethers.parseEther("1").toString(),
+              },
             ],
             consideration: [
               {

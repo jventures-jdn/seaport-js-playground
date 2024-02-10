@@ -3,6 +3,7 @@ import { SeaportPlayground } from "./seaport";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { HNftPublicApi } from "./api/hnft.public.api";
 import { NftHelper } from "./nfts";
+import { Blockchain } from "./blockchain";
 
 export class Offer {
   static async start(
@@ -14,7 +15,7 @@ export class Offer {
     );
 
     const nfts: Record<string, any> = {};
-    const blockchain = this.chainIdToNetworkName(sp.chainId);
+    const blockchain = Blockchain.chainIdToNetworkName(sp.chainId);
     if (blockchain)
       for (const offer of order.parameters.offer) {
         if (
@@ -47,22 +48,5 @@ export class Offer {
       order,
       nfts: Object.values(nfts),
     };
-  }
-
-  static chainIdToNetworkName(chainId: string) {
-    switch (chainId) {
-      case "1":
-        return "eth";
-      case "56":
-        return "bsc";
-      case "137":
-        return "polygon";
-      case "10":
-        return "optimism";
-      case "3501":
-        return "jfin";
-      case "3502":
-        return "jfin_testnet";
-    }
   }
 }
