@@ -16,11 +16,7 @@ export function Order(props: { orderKey: string }) {
   if (!order) return null;
   return (
     <Badge.Ribbon
-      style={{ textTransform: "capitalize" }}
-      text={
-        Blockchain.chainIdToNetworkName(raw.chainId)?.split("_").join(" ") ||
-        raw.chainId
-      }
+      text={Blockchain.chainIdToBlockchainName(raw.chainId) || raw.chainId}
     >
       <Card
         style={{ width: "100%" }}

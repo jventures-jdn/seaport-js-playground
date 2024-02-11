@@ -15,7 +15,7 @@ export class Offer {
     );
 
     const nfts: Record<string, any> = {};
-    const blockchain = Blockchain.chainIdToNetworkName(sp.chainId);
+    const blockchain = Blockchain.chainIdToBlockchainId(sp.chainId);
     if (blockchain)
       for (const item of [
         ...order.parameters.offer,

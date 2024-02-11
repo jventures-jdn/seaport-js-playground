@@ -1,5 +1,5 @@
 export class Blockchain {
-  static chainIdToNetworkName(chainId: string) {
+  static chainIdToBlockchainId(chainId: string) {
     switch (chainId) {
       case "1":
         return "eth";
@@ -13,6 +13,23 @@ export class Blockchain {
         return "jfin";
       case "3502":
         return "jfin_testnet";
+    }
+  }
+
+  static chainIdToBlockchainName(chainId: string) {
+    switch (chainId) {
+      case "1":
+        return "Ethereum";
+      case "56":
+        return "BSC";
+      case "137":
+        return "Polygon";
+      case "10":
+        return "Optimism";
+      case "3501":
+        return "Jfin Chain";
+      case "3502":
+        return "Jfin Chain Testnet";
     }
   }
 
