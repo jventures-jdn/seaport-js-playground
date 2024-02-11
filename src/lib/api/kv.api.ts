@@ -32,6 +32,7 @@ export function useKvApi() {
   return {
     all: () =>
       useSWR<Record<string, string>>("kv/allKeyValues", KvApi.allKeyValues),
+    reload: () => mutate("kv/allKeyValues"),
     write: useSWRMutation(
       `kv/write`,
       (key, extra: { arg: { key: string; value: OrderDataValue } }) =>

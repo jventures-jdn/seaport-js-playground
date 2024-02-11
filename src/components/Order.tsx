@@ -1,11 +1,12 @@
 import { Badge, Card } from "antd";
 import { useOrder } from "../lib/orders";
 import { useState } from "react";
-import { OrderRaw } from "./Order.Raw";
-import { OrderOffers } from "./Order.Offers";
-import { OrderConsiderations } from "./Order.Considerations";
+import { OrderRaw } from "./Order.Tab.Raw";
+import { OrderOffers } from "./Order.Tab.Offers";
+import { OrderConsiderations } from "./Order.Tab.Considerations";
 import { Blockchain } from "../lib/blockchain";
-import { OrderAction } from "./Order.Action";
+import { OrderAction } from "./Order.Tab.Action";
+import { OrderOverview } from "./Order.Tab.Overview";
 
 export function Order(props: { orderKey: string }) {
   const { orderKey } = props;
@@ -56,6 +57,7 @@ export function Order(props: { orderKey: string }) {
         activeTabKey={activeTabKey}
         onTabChange={setActiveTabKey}
       >
+        {activeTabKey === "overview" && <OrderOverview orderKey={orderKey} />}
         {activeTabKey === "offers" && <OrderOffers orderKey={orderKey} />}
         {activeTabKey === "considerations" && (
           <OrderConsiderations orderKey={orderKey} />

@@ -1,15 +1,43 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { mutate } from "swr";
 import useSWR from "swr/immutable";
+import useSWRMutation from "swr/mutation";
 import { useApi } from "./api";
 import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { Offer } from "./offer";
 import { OrderDataValue } from "./types";
+import { Fulfill } from "./fulfill";
 
 export function useOrders() {
   const kvApi = useApi().kv();
   const all = kvApi.all();
-  const [submitting, setSubmitting] = useState(false);
+
+  const create = useSWRMutation(
+    "orders/create",
+    (key, extra: { arg: { input: Parameters<typeof Offer.start>[0] } }) =>
+      Offer.start(extra.arg.input),
+    {
+      onSuccess: async (result) => {
+        // write kv
+        await kvApi.write.trigger({
+          key: result.orderHash,
+          value: { title: "Test Order", ...result },
+        });
+      },
+    }
+  );
+
+  const fulfill = useSWRMutation(
+    "orders/fulfill",
+    (key, extra: { arg: { order: OrderWithCounter } }) =>
+      Fulfill.start(extra.arg),
+    {
+      onSuccess: async () => {
+        await kvApi.reload();
+      },
+    }
+  );
+
   useEffect(() => {
     if (all.data) {
       mutate(
@@ -37,22 +65,14 @@ export function useOrders() {
         value: any & { order: OrderWithCounter };
       }[]
     >("orders", undefined).data,
-    submit: async (createOrder: Parameters<typeof Offer.start>[0]) => {
-      try {
-        setSubmitting(true);
-        // sign order and prepare additional data
-        const result = await Offer.start(createOrder);
-
-        // write kv
-        await kvApi.write.trigger({
-          key: result.orderHash,
-          value: { title: "Test Order", ...result },
-        });
-      } finally {
-        setSubmitting(false);
-      }
+    create: async (input: Parameters<typeof Offer.start>[0]) => {
+      await create.trigger({ input });
     },
-    submitting,
+    creating: create.isMutating,
+    fulfill: async (order: OrderWithCounter) => {
+      await fulfill.trigger({ order });
+    },
+    fulfilling: fulfill.isMutating,
   };
 }
 

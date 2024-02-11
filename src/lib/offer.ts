@@ -7,11 +7,11 @@ import { Blockchain } from "./blockchain";
 
 export class Offer {
   static async start(
-    createOrder: (context: { offerer: string }) => CreateOrderInput
+    input: (context: { offerer: string }) => CreateOrderInput
   ) {
     const sp = await SeaportPlayground.init();
     const { order, orderHash } = await sp.createOffChainOrder(
-      createOrder({ offerer: sp.address })
+      input({ offerer: sp.address })
     );
 
     const nfts: Record<string, any> = {};
