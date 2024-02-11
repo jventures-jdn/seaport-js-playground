@@ -8,7 +8,6 @@ export function OrderCancelButton(props: { orderKey: string }) {
   return (
     <Button
       danger
-      type="primary"
       loading={cancel.isMutating}
       onClick={async () => {
         try {
@@ -24,7 +23,7 @@ export function OrderCancelButton(props: { orderKey: string }) {
       {contextHolder}
       <Space>
         Cancel
-        <Tag color="blue">On Chain</Tag>
+        <Tag color="blue">On-Chain</Tag>
       </Space>
     </Button>
   );

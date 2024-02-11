@@ -22,7 +22,7 @@ export function OrderValidateButton(props: { orderKey: string }) {
       {contextHolder}
       <Space>
         Validate
-        <Tag color="blue">On Chain</Tag>
+        <Tag color="blue">On-Chain</Tag>
       </Space>
     </Button>
   );

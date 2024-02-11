@@ -1,21 +1,23 @@
 import { Seaport } from "@opensea/seaport-js";
 import { CreateOrderInput } from "@opensea/seaport-js/lib/types";
-import { ethers } from "ethers";
+import { BrowserProvider, ethers } from "ethers";
 
 export class SeaportPlayground {
   static async init(provider?: any) {
     const _provider = provider || (window as any).ethereum;
-    const signer = await new ethers.BrowserProvider(_provider).getSigner();
+    const __provider = new ethers.BrowserProvider(_provider);
+    const signer = await __provider.getSigner();
     const seaport = new Seaport(signer);
     const address = await signer.getAddress();
     const chainId = signer.provider._network.chainId.toString();
-    return new SeaportPlayground(seaport, address, chainId);
+    return new SeaportPlayground(seaport, address, chainId, __provider);
   }
 
   private constructor(
     readonly seaport: Seaport,
     readonly address: string,
-    readonly chainId: string
+    readonly chainId: string,
+    readonly provider: BrowserProvider
   ) {}
 
   async createOffChainOrder(order: CreateOrderInput) {

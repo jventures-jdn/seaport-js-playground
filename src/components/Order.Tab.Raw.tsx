@@ -5,7 +5,15 @@ export function OrderRaw(props: { orderKey: string }) {
   const { raw } = useOrder(orderKey);
   if (!raw) return null;
   return (
-    <pre style={{ overflowY: "scroll", maxHeight: 300 }}>
+    <pre
+      style={{
+        maxWidth: 650,
+        overflowY: "scroll",
+        whiteSpace: "pre-wrap",
+        wordWrap: "break-word",
+        maxHeight: 300,
+      }}
+    >
       {JSON.stringify(raw, null, 2)}
     </pre>
   );

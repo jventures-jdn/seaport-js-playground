@@ -1,4 +1,4 @@
-import { Badge, Card, Flex, Space, Tag } from "antd";
+import { Badge, Card, Flex, Tag } from "antd";
 import { useOrder } from "../lib/order";
 import { useState } from "react";
 import { OrderRaw } from "./Order.Tab.Raw";
@@ -26,7 +26,7 @@ const tabs = [
     key: "raw",
     tab: (
       <Flex gap="small" align="center">
-        Order<Tag>Off Chain</Tag>
+        Order<Tag>Off-Chain</Tag>
       </Flex>
     ),
   },
@@ -34,7 +34,7 @@ const tabs = [
     key: "status",
     tab: (
       <Flex gap="small" align="center">
-        Status<Tag color="blue">On Chain</Tag>
+        Status<Tag color="blue">On-Chain</Tag>
       </Flex>
     ),
   },
@@ -46,54 +46,60 @@ const tabs = [
 
 export function Order(props: { orderKey: string }) {
   const { orderKey } = props;
-  const { order, raw, status: s } = useOrder(orderKey);
-  const status = s();
+  const { order, raw, status } = useOrder(orderKey);
+  const orderStatus = status();
   const { title } = raw;
   const [activeTabKey, setActiveTabKey] = useState<string>("overview");
   if (!order) return null;
 
   return (
-    <Badge.Ribbon
-      text={Blockchain.chainIdToBlockchainName(raw.chainId) || raw.chainId}
-    >
-      <Card
-        style={{ width: "100%" }}
-        title={
-          <Flex vertical gap="small">
-            <div>
-              <Flex gap="small" align="center">
-                📣 {title}
-                {status.data?.isValidated && !status.data?.totalFilled && (
-                  <Tag color="green">Validated</Tag>
-                )}
-                {status.data?.isCancelled && <Tag color="red">Cancelled</Tag>}
-                {status.data?.totalFilled.toString() !== "0" && (
-                  <Tag color="green">
-                    Filled {status.data?.totalFilled.toString()}/
-                    {status.data?.totalSize.toString()}
-                  </Tag>
-                )}
-              </Flex>
-            </div>
-            <span style={{ fontSize: 12, fontWeight: "normal" }}>
-              <div>Offerer : {order.parameters.offerer}</div>
-              <div>Order Hash : {orderKey}</div>
-            </span>
-          </Flex>
-        }
-        tabList={tabs}
-        activeTabKey={activeTabKey}
-        onTabChange={setActiveTabKey}
+    <div style={{ minWidth: 300 }}>
+      <Badge.Ribbon
+        text={Blockchain.chainIdToBlockchainName(raw.chainId) || raw.chainId}
       >
-        {activeTabKey === "overview" && <OrderOverview orderKey={orderKey} />}
-        {activeTabKey === "offers" && <OrderOffers orderKey={orderKey} />}
-        {activeTabKey === "considerations" && (
-          <OrderConsiderations orderKey={orderKey} />
-        )}
-        {activeTabKey === "raw" && <OrderRaw orderKey={orderKey} />}
-        {activeTabKey === "status" && <OrderStatus orderKey={orderKey} />}
-        {activeTabKey === "action" && <OrderAction orderKey={orderKey} />}
-      </Card>
-    </Badge.Ribbon>
+        <Card
+          title={
+            <Flex vertical gap="small">
+              <div>
+                <Flex gap="small" align="center">
+                  📣 {title}
+                  {orderStatus.data?.isValidated &&
+                    !orderStatus.data?.totalFilled && (
+                      <Tag color="green">Validated</Tag>
+                    )}
+                  {orderStatus.data?.isCancelled && (
+                    <Tag color="red">Cancelled</Tag>
+                  )}
+                  {orderStatus.data?.totalFilled !== undefined &&
+                    orderStatus.data?.totalFilled.toString() !== "0" && (
+                      <Tag color="green">
+                        Filled {orderStatus.data?.totalFilled.toString()}/
+                        {orderStatus.data?.totalSize.toString()}
+                      </Tag>
+                    )}
+                </Flex>
+              </div>
+              <span style={{ fontSize: 12, fontWeight: "normal" }}>
+                <div>Offerer : {order.parameters.offerer}</div>
+                <div>Order Hash : {orderKey}</div>
+              </span>
+            </Flex>
+          }
+          tabProps={{ size: "small" }}
+          tabList={tabs}
+          activeTabKey={activeTabKey}
+          onTabChange={setActiveTabKey}
+        >
+          {activeTabKey === "overview" && <OrderOverview orderKey={orderKey} />}
+          {activeTabKey === "offers" && <OrderOffers orderKey={orderKey} />}
+          {activeTabKey === "considerations" && (
+            <OrderConsiderations orderKey={orderKey} />
+          )}
+          {activeTabKey === "raw" && <OrderRaw orderKey={orderKey} />}
+          {activeTabKey === "status" && <OrderStatus orderKey={orderKey} />}
+          {activeTabKey === "action" && <OrderAction orderKey={orderKey} />}
+        </Card>
+      </Badge.Ribbon>
+    </div>
   );
 }

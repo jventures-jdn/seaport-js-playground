@@ -1,4 +1,4 @@
-import { Space, Tag } from "antd";
+import { Flex, Tag } from "antd";
 import { ethers } from "ethers";
 import { useEffect, useMemo, useState } from "react";
 import { Blockchain } from "../lib/blockchain";
@@ -53,7 +53,7 @@ export function Account() {
 
   if (warn) return <div>⚠️ No wallet detected</div>;
   return (
-    <Space>
+    <Flex align="center" gap="small" wrap="wrap">
       {account}
       <Tag color="blue">
         <>{blockchain || `Network : ${networkId}`}</>
@@ -62,6 +62,6 @@ export function Account() {
         {ethers.formatEther(balance)}{" "}
         {Blockchain.chainIdToNativeCurrency(networkId)}
       </Tag>
-    </Space>
+    </Flex>
   );
 }

@@ -58,6 +58,6 @@ export function useOrders() {
     create: async (input: Parameters<typeof Actions.createOrder>[0]) => {
       await create.trigger({ input });
     },
-    creating: create.isMutating,
+    creating: create.isMutating || kvApi.write.isMutating,
   };
 }

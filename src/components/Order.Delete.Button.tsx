@@ -12,10 +12,10 @@ export function OrderDeleteButton(props: { orderKey: string }) {
       icon={<QuestionCircleOutlined style={{ color: "red" }} />}
       onConfirm={del}
     >
-      <Button danger loading={deleting} disabled={loading}>
+      <Button danger type="primary" loading={deleting} disabled={loading}>
         <Space>
           Delete
-          <Tag>Off Chain</Tag>
+          <Tag>Off-Chain</Tag>
         </Space>
       </Button>
     </Popconfirm>

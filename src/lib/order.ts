@@ -30,9 +30,7 @@ export function useOrder(orderKey: string) {
 
   const fulfill = useSWRMutation(
     `orders/${orderKey}/fulfill`,
-    async () => ({
-      transaction: await Actions.fulfill({ order }),
-    }),
+    async () => await Actions.fulfill({ order }),
     {
       onSuccess: async () => {
         // clear order status
@@ -45,7 +43,9 @@ export function useOrder(orderKey: string) {
     `orders/${orderKey}/validate`,
     async () => {
       const sp = await SeaportPlayground.init();
-      return { transaction: await sp.seaport.validate([order]).transact() };
+      const transaction = await sp.seaport.validate([order]).transact();
+      const receipt = await sp.provider.waitForTransaction(transaction.hash, 1);
+      return { transaction, receipt };
     },
     {
       onSuccess: async () => {
@@ -59,11 +59,11 @@ export function useOrder(orderKey: string) {
     `orders/${orderKey}/cancel`,
     async () => {
       const sp = await SeaportPlayground.init();
-      return {
-        transaction: await sp.seaport
-          .cancelOrders([order.parameters])
-          .transact(),
-      };
+      const transaction = await sp.seaport
+        .cancelOrders([order.parameters])
+        .transact();
+      const receipt = await sp.provider.waitForTransaction(transaction.hash, 1);
+      return { transaction, receipt };
     },
     {
       onSuccess: async () => {

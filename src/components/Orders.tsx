@@ -3,20 +3,21 @@ import { useOrders } from "../lib/orders";
 import { Order } from "./Order";
 
 export function Orders() {
-  const { isLoading, orders } = useOrders();
-  if (isLoading)
-    return (
-      <>
-        <Card loading></Card>
-        <Card loading></Card>
-        <Card loading></Card>
-      </>
-    );
+  const { isLoading, orders, creating } = useOrders();
+  const Skeleton = () => (
+    <Card loading style={{ minWidth: 300, width: 700, height: 380 }} />
+  );
   return (
-    <Flex gap="middle" vertical>
-      {orders?.map(({ key }) => (
-        <Order key={key} orderKey={key} />
-      ))}
+    <Flex gap="large" wrap="wrap" justify="center" align="center">
+      {creating && <Skeleton />}
+      {isLoading && (
+        <>
+          <Skeleton />
+          <Skeleton />
+        </>
+      )}
+      {!isLoading &&
+        orders?.map(({ key }) => <Order key={key} orderKey={key} />)}
     </Flex>
   );
 }
