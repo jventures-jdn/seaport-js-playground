@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Flex, Tag } from "antd";
 import { useOrder, useOrders } from "../lib/orders";
 
 export function OrderFulfillButton(props: { orderKey: string }) {
@@ -12,7 +12,9 @@ export function OrderFulfillButton(props: { orderKey: string }) {
         await fulfill(order);
       }}
     >
-      Fulfill
+      <Flex gap="small" align="center">
+        Fulfill<Tag color="blue">On Chain</Tag>
+      </Flex>
     </Button>
   );
 }

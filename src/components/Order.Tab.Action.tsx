@@ -5,7 +5,7 @@ import { OrderFulfillButton } from "./Order.Fulfill.Button";
 export function OrderAction(props: { orderKey: string }) {
   const { orderKey } = props;
   return (
-    <Flex gap="middle" align="center" wrap="wrap">
+    <Flex vertical gap="middle" align="start" wrap="wrap">
       <OrderFulfillButton orderKey={orderKey} />
       <OrderDeleteButton orderKey={orderKey} />
     </Flex>

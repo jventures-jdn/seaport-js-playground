@@ -1,4 +1,4 @@
-import { Badge, Card } from "antd";
+import { Badge, Card, Flex, Tag } from "antd";
 import { useOrder } from "../lib/orders";
 import { useState } from "react";
 import { OrderRaw } from "./Order.Tab.Raw";
@@ -7,6 +7,42 @@ import { OrderConsiderations } from "./Order.Tab.Considerations";
 import { Blockchain } from "../lib/blockchain";
 import { OrderAction } from "./Order.Tab.Action";
 import { OrderOverview } from "./Order.Tab.Overview";
+import { OrderStatus } from "./Order.Tab.Status";
+
+const tabs = [
+  {
+    key: "overview",
+    tab: "Overview",
+  },
+  {
+    key: "offers",
+    tab: "Offers",
+  },
+  {
+    key: "considerations",
+    tab: "Considerations",
+  },
+  {
+    key: "raw",
+    tab: (
+      <Flex gap="small" align="center">
+        Order<Tag>Off Chain</Tag>
+      </Flex>
+    ),
+  },
+  {
+    key: "status",
+    tab: (
+      <Flex gap="small" align="center">
+        Status<Tag color="blue">On Chain</Tag>
+      </Flex>
+    ),
+  },
+  {
+    key: "action",
+    tab: "Action",
+  },
+];
 
 export function Order(props: { orderKey: string }) {
   const { orderKey } = props;
@@ -14,6 +50,7 @@ export function Order(props: { orderKey: string }) {
   const { title } = raw;
   const [activeTabKey, setActiveTabKey] = useState<string>("overview");
   if (!order) return null;
+
   return (
     <Badge.Ribbon
       text={Blockchain.chainIdToBlockchainName(raw.chainId) || raw.chainId}
@@ -28,28 +65,7 @@ export function Order(props: { orderKey: string }) {
             </span>
           </>
         }
-        tabList={[
-          {
-            key: "overview",
-            tab: "Overview",
-          },
-          {
-            key: "offers",
-            tab: "Offers",
-          },
-          {
-            key: "considerations",
-            tab: "Considerations",
-          },
-          {
-            key: "raw",
-            tab: "Raw",
-          },
-          {
-            key: "action",
-            tab: "Action",
-          },
-        ]}
+        tabList={tabs}
         activeTabKey={activeTabKey}
         onTabChange={setActiveTabKey}
       >
@@ -59,6 +75,7 @@ export function Order(props: { orderKey: string }) {
           <OrderConsiderations orderKey={orderKey} />
         )}
         {activeTabKey === "raw" && <OrderRaw orderKey={orderKey} />}
+        {activeTabKey === "status" && <OrderStatus orderKey={orderKey} />}
         {activeTabKey === "action" && <OrderAction orderKey={orderKey} />}
       </Card>
     </Badge.Ribbon>

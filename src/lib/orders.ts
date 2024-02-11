@@ -7,6 +7,7 @@ import { OrderWithCounter } from "@opensea/seaport-js/lib/types";
 import { Offer } from "./offer";
 import { OrderDataValue } from "./types";
 import { Fulfill } from "./fulfill";
+import { SeaportPlayground } from "./seaport";
 
 export function useOrders() {
   const kvApi = useApi().kv();
@@ -57,6 +58,7 @@ export function useOrders() {
       );
     }
   }, [all]);
+
   return {
     ...all,
     orders: useSWR<
@@ -89,5 +91,11 @@ export function useOrder(orderKey: string) {
   };
   const deleting = api.delete.isMutating;
   const loading = orders.isLoading || orders.isValidating || deleting;
-  return { loading, raw, order, delete: del, deleting };
+  const status = () =>
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    useSWR(`orders/${orderKey}/status`, async () => {
+      const sp = await SeaportPlayground.init();
+      return sp.seaport.getOrderStatus(orderKey);
+    });
+  return { loading, raw, order, delete: del, deleting, status };
 }
