@@ -21,7 +21,7 @@ export function useOrders() {
         // write kv
         await kvApi.write.trigger({
           key: result.orderHash,
-          value: { title: "Test Order", ...result },
+          value: { title: result.orderHash.substring(0, 9), ...result },
         });
       },
     }

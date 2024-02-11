@@ -1,4 +1,4 @@
-import { Badge, Card, Flex, Tag } from "antd";
+import { Badge, Card, Flex, Space, Tag } from "antd";
 import { useOrder } from "../lib/order";
 import { useState } from "react";
 import { OrderRaw } from "./Order.Tab.Raw";
@@ -46,7 +46,8 @@ const tabs = [
 
 export function Order(props: { orderKey: string }) {
   const { orderKey } = props;
-  const { order, raw } = useOrder(orderKey);
+  const { order, raw, status: s } = useOrder(orderKey);
+  const status = s();
   const { title } = raw;
   const [activeTabKey, setActiveTabKey] = useState<string>("overview");
   if (!order) return null;
@@ -58,12 +59,27 @@ export function Order(props: { orderKey: string }) {
       <Card
         style={{ width: "100%" }}
         title={
-          <>
-            <div>{title}</div>
+          <Flex vertical gap="small">
+            <div>
+              <Flex gap="small" align="center">
+                📣 {title}
+                {status.data?.isValidated && !status.data?.totalFilled && (
+                  <Tag color="green">Validated</Tag>
+                )}
+                {status.data?.isCancelled && <Tag color="red">Cancelled</Tag>}
+                {status.data?.totalFilled.toString() !== "0" && (
+                  <Tag color="green">
+                    Filled {status.data?.totalFilled.toString()}/
+                    {status.data?.totalSize.toString()}
+                  </Tag>
+                )}
+              </Flex>
+            </div>
             <span style={{ fontSize: 12, fontWeight: "normal" }}>
-              {orderKey}
+              <div>Offerer : {order.parameters.offerer}</div>
+              <div>Order Hash : {orderKey}</div>
             </span>
-          </>
+          </Flex>
         }
         tabList={tabs}
         activeTabKey={activeTabKey}

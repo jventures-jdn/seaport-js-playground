@@ -55,6 +55,24 @@ export function useOrder(orderKey: string) {
     }
   );
 
+  const cancel = useSWRMutation(
+    `orders/${orderKey}/cancel`,
+    async () => {
+      const sp = await SeaportPlayground.init();
+      return {
+        transaction: await sp.seaport
+          .cancelOrders([order.parameters])
+          .transact(),
+      };
+    },
+    {
+      onSuccess: async () => {
+        // clear order status
+        await mutate(`orders/${orderKey}/status`, undefined);
+      },
+    }
+  );
+
   return {
     loading,
     raw,
@@ -64,5 +82,6 @@ export function useOrder(orderKey: string) {
     status,
     fulfill,
     validate,
+    cancel,
   };
 }
