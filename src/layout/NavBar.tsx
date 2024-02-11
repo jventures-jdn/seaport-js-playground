@@ -1,8 +1,11 @@
-import { Flex } from "antd";
+import { Flex, Space } from "antd";
 import { OrderCreateButton } from "../components/Order.Create.Button";
 import { Account } from "./Account";
+import { useDrafting } from "../lib/drafting";
+import { OrderDraftsButton } from "../components/Order.Drafts.Button";
 
 export function NavBar() {
+  const draftsCount = useDrafting((state) => state.hasDrafts());
   return (
     <Flex
       gap="small"
@@ -29,7 +32,10 @@ export function NavBar() {
         </Flex>
         <Account />
       </Flex>
-      <OrderCreateButton />
+      <Space>
+        {draftsCount > 0 && <OrderDraftsButton />}
+        <OrderCreateButton />
+      </Space>
     </Flex>
   );
 }
