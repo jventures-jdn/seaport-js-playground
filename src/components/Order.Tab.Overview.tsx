@@ -1,4 +1,4 @@
-import { useOrder } from "../lib/orders";
+import { useOrder } from "../lib/order";
 
 export function OrderOverview(props: { orderKey: string }) {
   const { orderKey } = props;

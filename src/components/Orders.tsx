@@ -1,10 +1,17 @@
-import { Flex } from "antd";
+import { Card, Flex } from "antd";
 import { useOrders } from "../lib/orders";
 import { Order } from "./Order";
 
 export function Orders() {
   const { isLoading, orders } = useOrders();
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading)
+    return (
+      <>
+        <Card loading></Card>
+        <Card loading></Card>
+        <Card loading></Card>
+      </>
+    );
   return (
     <Flex gap="middle" vertical>
       {orders?.map(({ key }) => (

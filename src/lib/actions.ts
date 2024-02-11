@@ -1,12 +1,15 @@
-import { CreateOrderInput } from "@opensea/seaport-js/lib/types";
+import {
+  CreateOrderInput,
+  OrderWithCounter,
+} from "@opensea/seaport-js/lib/types";
 import { SeaportPlayground } from "./seaport";
+import { Blockchain } from "./blockchain";
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { HNftPublicApi } from "./api/hnft.public.api";
 import { NftHelper } from "./nfts";
-import { Blockchain } from "./blockchain";
 
-export class Offer {
-  static async start(
+export class Actions {
+  static async createOrder(
     input: (context: { offerer: string }) => CreateOrderInput
   ) {
     const sp = await SeaportPlayground.init();
@@ -51,5 +54,14 @@ export class Offer {
       order,
       nfts: Object.values(nfts),
     };
+  }
+
+  static async fulfill({ order }: { order: OrderWithCounter }) {
+    const sp = await SeaportPlayground.init();
+    const { executeAllActions } = await sp.seaport.fulfillOrder({
+      order,
+    });
+    const transaction = await executeAllActions();
+    return { transaction };
   }
 }

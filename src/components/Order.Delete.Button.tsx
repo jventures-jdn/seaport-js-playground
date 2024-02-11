@@ -1,6 +1,6 @@
 import { Button, Popconfirm, Space, Tag } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
-import { useOrder } from "../lib/orders";
+import { useOrder } from "../lib/order";
 
 export function OrderDeleteButton(props: { orderKey: string }) {
   const { orderKey } = props;

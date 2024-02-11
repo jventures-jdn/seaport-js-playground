@@ -1,5 +1,5 @@
 import { Flex } from "antd";
-import { useOrder } from "../lib/orders";
+import { useOrder } from "../lib/order";
 import { OrderItem } from "./Order.Item";
 
 export function OrderOffers(props: { orderKey: string }) {

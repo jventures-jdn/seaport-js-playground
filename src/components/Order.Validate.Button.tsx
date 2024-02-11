@@ -1,20 +1,19 @@
 import { Button, Space, Tag, notification } from "antd";
 import { useOrder } from "../lib/order";
 
-export function OrderFulfillButton(props: { orderKey: string }) {
+export function OrderValidateButton(props: { orderKey: string }) {
   const [api, contextHolder] = notification.useNotification();
   const { orderKey } = props;
-  const { fulfill } = useOrder(orderKey);
+  const { validate } = useOrder(orderKey);
   return (
     <Button
-      type="primary"
-      loading={fulfill.isMutating}
+      loading={validate.isMutating}
       onClick={async () => {
         try {
-          await fulfill.trigger();
+          await validate.trigger();
         } catch (e: any) {
           api["error"]({
-            message: "Fail to fulfill order",
+            message: "Fail to validate order",
             description: e.message,
           });
         }
@@ -22,7 +21,7 @@ export function OrderFulfillButton(props: { orderKey: string }) {
     >
       {contextHolder}
       <Space>
-        Fulfill
+        Validate
         <Tag color="blue">On Chain</Tag>
       </Space>
     </Button>

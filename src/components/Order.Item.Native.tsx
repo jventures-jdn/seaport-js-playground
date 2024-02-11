@@ -1,5 +1,5 @@
 import Card from "antd/es/card/Card";
-import { useOrder } from "../lib/orders";
+import { useOrder } from "../lib/order";
 import { ConsiderationItem, OfferItem } from "@opensea/seaport-js/lib/types";
 import { ethers } from "ethers";
 import { Blockchain } from "../lib/blockchain";

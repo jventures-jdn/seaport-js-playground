@@ -1,7 +1,7 @@
 import { Card } from "antd";
 import { NftHelper } from "../lib/nfts";
 import { ImageFallback } from "../ui-kit/ImageFallback";
-import { useOrder } from "../lib/orders";
+import { useOrder } from "../lib/order";
 import { NftTokenData } from "../lib/types";
 import { Blockchain } from "../lib/blockchain";
 

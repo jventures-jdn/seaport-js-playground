@@ -1,6 +1,6 @@
 import { ItemType } from "@opensea/seaport-js/lib/constants";
 import { ConsiderationItem, OfferItem } from "@opensea/seaport-js/lib/types";
-import { useOrder } from "../lib/orders";
+import { useOrder } from "../lib/order";
 import { useMemo } from "react";
 import { OrderItemNft } from "./Order.Item.Nft";
 import { OrderItemNative } from "./Order.Item.Native";

@@ -1,5 +1,5 @@
 import { Button } from "antd";
-import { useOrder } from "../lib/orders";
+import { useOrder } from "../lib/order";
 
 export function OrderStatus(props: { orderKey: string }) {
   const { orderKey } = props;
