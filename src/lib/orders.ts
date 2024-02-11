@@ -15,8 +15,8 @@ export function useOrders() {
 
   const create = useSWRMutation(
     "orders/create",
-    (key, extra: { arg: { input: Parameters<typeof Offer.start>[0] } }) =>
-      Offer.start(extra.arg.input),
+    async (key, extra: { arg: { input: Parameters<typeof Offer.start>[0] } }) =>
+      await Offer.start(extra.arg.input),
     {
       onSuccess: async (result) => {
         // write kv
@@ -30,11 +30,17 @@ export function useOrders() {
 
   const fulfill = useSWRMutation(
     "orders/fulfill",
-    (key, extra: { arg: { order: OrderWithCounter } }) =>
-      Fulfill.start(extra.arg),
+    async (
+      key,
+      extra: { arg: { orderHash: string; order: OrderWithCounter } }
+    ) => ({
+      orderKey: extra.arg.orderHash,
+      transaction: await Fulfill.start({ order: extra.arg.order }),
+    }),
     {
-      onSuccess: async () => {
-        await kvApi.reload();
+      onSuccess: async (result) => {
+        // clear order status
+        await mutate(`orders/${result.orderKey}/status`, undefined);
       },
     }
   );
@@ -71,8 +77,8 @@ export function useOrders() {
       await create.trigger({ input });
     },
     creating: create.isMutating,
-    fulfill: async (order: OrderWithCounter) => {
-      await fulfill.trigger({ order });
+    fulfill: async (orderHash: string, order: OrderWithCounter) => {
+      await fulfill.trigger({ orderHash, order });
     },
     fulfilling: fulfill.isMutating,
   };
@@ -95,7 +101,7 @@ export function useOrder(orderKey: string) {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useSWR(`orders/${orderKey}/status`, async () => {
       const sp = await SeaportPlayground.init();
-      return sp.seaport.getOrderStatus(orderKey);
+      return await sp.seaport.getOrderStatus(orderKey);
     });
   return { loading, raw, order, delete: del, deleting, status };
 }

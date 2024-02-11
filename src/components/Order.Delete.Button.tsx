@@ -1,4 +1,4 @@
-import { Button, Popconfirm } from "antd";
+import { Button, Popconfirm, Space, Tag } from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import { useOrder } from "../lib/orders";
 
@@ -13,7 +13,10 @@ export function OrderDeleteButton(props: { orderKey: string }) {
       onConfirm={del}
     >
       <Button danger loading={deleting} disabled={loading}>
-        Delete
+        <Space>
+          Delete
+          <Tag>Off Chain</Tag>
+        </Space>
       </Button>
     </Popconfirm>
   );

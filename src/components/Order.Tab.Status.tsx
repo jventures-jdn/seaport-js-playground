@@ -1,3 +1,4 @@
+import { Button } from "antd";
 import { useOrder } from "../lib/orders";
 
 export function OrderStatus(props: { orderKey: string }) {
@@ -6,12 +7,23 @@ export function OrderStatus(props: { orderKey: string }) {
   if (status.isLoading) return <div>Loading...</div>;
   if (!status.data) return null;
   return (
-    <pre style={{ overflowY: "scroll", maxHeight: 300 }}>
-      {JSON.stringify(
-        status.data,
-        (key, value) => (typeof value === "bigint" ? value.toString() : value), // return everything else unchanged
-        2
-      )}
-    </pre>
+    <>
+      <pre style={{ overflowY: "scroll", maxHeight: 300 }}>
+        {JSON.stringify(
+          status.data,
+          (key, value) =>
+            typeof value === "bigint" ? value.toString() : value, // return everything else unchanged
+          2
+        )}
+      </pre>
+      <Button
+        loading={status.isValidating}
+        onClick={() => {
+          status.mutate();
+        }}
+      >
+        Update
+      </Button>
+    </>
   );
 }
