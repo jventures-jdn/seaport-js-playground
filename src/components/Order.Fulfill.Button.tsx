@@ -13,6 +13,7 @@ export function OrderFulfillButton(props: { orderKey: string }) {
         try {
           await fulfill.trigger();
         } catch (e: any) {
+          if (e.message?.startsWith("user rejected action")) return;
           api["error"]({
             message: "Fail to fulfill order",
             description: e.message,

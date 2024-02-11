@@ -3,6 +3,13 @@ import { CreateOrderInput } from "@opensea/seaport-js/lib/types";
 import { BrowserProvider, ethers } from "ethers";
 
 export class SeaportPlayground {
+  static async initReadonly(provider?: any) {
+    const _provider = provider || (window as any).ethereum;
+    const __provider = new ethers.BrowserProvider(_provider);
+    const seaport = new Seaport(__provider as any);
+    return new SeaportPlayground(seaport, "", "", __provider);
+  }
+
   static async init(provider?: any) {
     const _provider = provider || (window as any).ethereum;
     const __provider = new ethers.BrowserProvider(_provider);

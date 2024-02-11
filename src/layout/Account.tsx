@@ -1,4 +1,4 @@
-import { Flex, Tag } from "antd";
+import { Button, Flex, Tag } from "antd";
 import { ethers } from "ethers";
 import { useEffect, useMemo, useState } from "react";
 import { Blockchain } from "../lib/blockchain";
@@ -19,9 +19,10 @@ export function Account() {
       const provider = new ethers.BrowserProvider(ethereum);
       const updateAccounts = (accounts: any[]) => {
         setAccounts(accounts);
-        updateBalance(accounts[0]);
+        if (accounts.length) updateBalance(accounts[0]);
       };
       const updateBalance = (account: string) => {
+        if (!account) return;
         provider.getBalance(account).then((balance: bigint) => {
           setBalance(balance);
         });
@@ -52,9 +53,21 @@ export function Account() {
   }, []);
 
   if (warn) return <div>⚠️ No wallet detected</div>;
+  if (!account)
+    return (
+      <Button
+        onClick={async () => {
+          try {
+            await ethereum.request({ method: "eth_requestAccounts" });
+          } catch {}
+        }}
+      >
+        Connect
+      </Button>
+    );
   return (
     <Flex align="center" gap="small" wrap="wrap">
-      {account}
+      <span style={{ fontSize: 14 }}>{account}</span>
       <Tag color="blue">
         <>{blockchain || `Network : ${networkId}`}</>
       </Tag>

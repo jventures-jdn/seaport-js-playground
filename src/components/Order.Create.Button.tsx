@@ -29,6 +29,7 @@ export function OrderCreateButton() {
             ],
           }));
         } catch (e: any) {
+          if (e.message?.startsWith("user rejected action")) return;
           api["error"]({
             message: "Fail to create order",
             description: e.message,

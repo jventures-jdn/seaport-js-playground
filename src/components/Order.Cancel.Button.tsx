@@ -13,6 +13,7 @@ export function OrderCancelButton(props: { orderKey: string }) {
         try {
           await cancel.trigger();
         } catch (e: any) {
+          if (e.message?.startsWith("user rejected action")) return;
           api["error"]({
             message: "Fail to cancel order",
             description: e.message,

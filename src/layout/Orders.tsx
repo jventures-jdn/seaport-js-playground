@@ -1,6 +1,6 @@
 import { Card, Flex } from "antd";
 import { useOrders } from "../lib/orders";
-import { Order } from "./Order";
+import { Order } from "../components/Order";
 
 export function Orders() {
   const { isLoading, orders, creating } = useOrders();

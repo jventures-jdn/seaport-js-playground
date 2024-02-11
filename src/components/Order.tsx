@@ -58,14 +58,29 @@ export function Order(props: { orderKey: string }) {
         text={Blockchain.chainIdToBlockchainName(raw.chainId) || raw.chainId}
       >
         <Card
+          style={{ padding: "12px 0" }}
           title={
-            <Flex vertical gap="small">
+            <Flex
+              vertical
+              gap="small"
+              style={{
+                maxWidth: 550,
+              }}
+            >
               <div>
                 <Flex gap="small" align="center">
-                  📣 {title}
+                  <span
+                    style={{
+                      textOverflow: "ellipsis",
+                      overflow: "hidden",
+                      whiteSpace: "nowrap",
+                    }}
+                  >
+                    📣 {title}
+                  </span>
                   {orderStatus.data?.isValidated &&
                     !orderStatus.data?.totalFilled && (
-                      <Tag color="green">Validated</Tag>
+                      <Tag color="yellow">Validated</Tag>
                     )}
                   {orderStatus.data?.isCancelled && (
                     <Tag color="red">Cancelled</Tag>
