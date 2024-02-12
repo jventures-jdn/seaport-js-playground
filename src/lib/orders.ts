@@ -14,14 +14,22 @@ export function useOrders() {
     "orders/create",
     async (
       key,
-      extra: { arg: { input: Parameters<typeof Actions.createOrder>[0] } }
-    ) => await Actions.createOrder(extra.arg.input),
+      extra: {
+        arg: {
+          title: string;
+          input: Parameters<typeof Actions.createOrder>[0];
+        };
+      }
+    ) => ({
+      title: extra.arg.title,
+      order: await Actions.createOrder(extra.arg.input),
+    }),
     {
       onSuccess: async (result) => {
         // write kv
         await kvApi.write.trigger({
-          key: result.orderHash,
-          value: { title: result.orderHash.substring(0, 9), ...result },
+          key: result.order.orderHash,
+          value: { title: result.title, ...result.order },
         });
       },
     }
@@ -55,8 +63,11 @@ export function useOrders() {
         value: any & { order: OrderWithCounter };
       }[]
     >("orders", undefined).data,
-    create: async (input: Parameters<typeof Actions.createOrder>[0]) => {
-      await create.trigger({ input });
+    create: async (
+      title: string,
+      input: Parameters<typeof Actions.createOrder>[0]
+    ) => {
+      return await create.trigger({ title, input });
     },
     creating: create.isMutating || kvApi.write.isMutating,
   };

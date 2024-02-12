@@ -1,6 +1,6 @@
 import { Button, Modal } from "antd";
 import { useState } from "react";
-import { OrderDrafts } from "../layout/OrderDrafts";
+import { OrderDrafts } from "./Order.Drafts";
 import { useDrafting } from "../lib/drafting";
 
 export function OrderDraftsButton() {

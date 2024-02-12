@@ -30,7 +30,8 @@ export class SeaportPlayground {
   async createOffChainOrder(order: CreateOrderInput) {
     const { executeAllActions } = await this.seaport.createOrder(
       order,
-      this.address
+      this.address,
+      true
     );
     const _order = await executeAllActions();
     const orderHash = this.seaport.getOrderHash(_order.parameters);

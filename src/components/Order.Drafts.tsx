@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { OrderDraftModal } from "./OrderDraftModal";
+import { OrderDraftModal } from "../layout/OrderDraftModal";
 import { useDrafting } from "../lib/drafting";
 import { Button, Flex } from "antd";
 
@@ -9,14 +9,14 @@ export function OrderDrafts() {
   return (
     <>
       {/* Edit Draft */}
-      {editingDraftId && (
+      {
         <OrderDraftModal
           mode="edit"
-          draftId={editingDraftId}
-          open={true}
+          draftId={editingDraftId!}
+          open={!!editingDraftId}
           setOpen={() => setEditingDraftId(null)}
         />
-      )}
+      }
       {/* Select Draft */}
       <Flex vertical gap="small">
         {Object.entries(createOrders).map(([id, draft]) => (
