@@ -24,7 +24,7 @@ export function useOrder(orderKey: string) {
   const status = () =>
     // eslint-disable-next-line react-hooks/rules-of-hooks
     useSWR(`orders/${orderKey}/status`, async () => {
-      const sp = await SeaportPlayground.initReadonly();
+      const sp = await SeaportPlayground.initReadonly(raw.chainId);
       return await sp.seaport.getOrderStatus(orderKey);
     });
 

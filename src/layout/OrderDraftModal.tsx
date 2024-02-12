@@ -78,11 +78,6 @@ export function OrderDraftModal({
               onClick={async () => {
                 try {
                   const draft = useDrafting.getState().createOrders[draftId];
-                  // const sp = await SeaportPlayground.init();
-                  // for (let i = 0; i < draft.order.consideration.length; i++) {
-                  //   (draft.order as any).consideration[i].recipient = sp.address;
-                  // }
-                  console.log(draft);
                   const result = await create(
                     draft.title,
                     ({ offerer }) => draft.order

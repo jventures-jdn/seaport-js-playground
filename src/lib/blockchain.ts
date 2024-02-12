@@ -50,6 +50,23 @@ export class Blockchain {
     }
   }
 
+  static chainIdToPublicRpc(chainId: string) {
+    switch (chainId) {
+      case "1":
+        return "https://rpc.ankr.com/eth";
+      case "56":
+        return "https://rpc.ankr.com/bsc";
+      case "137":
+        return "https://rpc.ankr.com/polygon";
+      case "10":
+        return "https://rpc.ankr.com/optimism";
+      case "3501":
+        return "https://rpc.jfinchain.com";
+      case "3502":
+        return "https://rpc.testnet.jfinchain.com";
+    }
+  }
+
   static nftTokenUrl(
     chainId: string,
     contractAddress: string,

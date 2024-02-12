@@ -1,13 +1,16 @@
 import { Seaport } from "@opensea/seaport-js";
 import { CreateOrderInput } from "@opensea/seaport-js/lib/types";
 import { BrowserProvider, ethers } from "ethers";
+import { Blockchain } from "./blockchain";
 
 export class SeaportPlayground {
-  static async initReadonly(provider?: any) {
-    const _provider = provider || (window as any).ethereum;
-    const __provider = new ethers.BrowserProvider(_provider);
+  static async initReadonly(chainId: string) {
+    const rpc = Blockchain.chainIdToPublicRpc(chainId);
+    const __provider = rpc
+      ? new ethers.JsonRpcProvider(rpc)
+      : new ethers.BrowserProvider((window as any).ethereum);
     const seaport = new Seaport(__provider as any);
-    return new SeaportPlayground(seaport, "", "", __provider);
+    return new SeaportPlayground(seaport, "", "", __provider as any);
   }
 
   static async init(provider?: any) {
