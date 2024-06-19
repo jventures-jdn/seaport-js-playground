@@ -79,6 +79,8 @@ export const useDrafting = create<DraftingState>()(
                   .parseUnits(item.erc20_amount?.toString() || "0", 18)
                   .toString();
                 return {
+                  itemType: ItemType.ERC20,
+                  token: item.erc20_contract,
                   amount: erc20Amount,
                   recipient,
                 };

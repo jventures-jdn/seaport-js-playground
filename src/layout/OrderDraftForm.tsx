@@ -187,7 +187,7 @@ const OrderItem = ({
             style={{ marginLeft: 8 }}
             required
           >
-            <InputNumber addonBefore="Amount" required />
+            <Input addonBefore="Amount" required />
           </Form.Item>
         </>
       )}

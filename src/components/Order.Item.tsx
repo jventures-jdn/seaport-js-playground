@@ -4,6 +4,7 @@ import { useOrder } from "../lib/order";
 import { useMemo } from "react";
 import { OrderItemNft } from "./Order.Item.Nft";
 import { OrderItemNative } from "./Order.Item.Native";
+import { OrderItemErc20 } from "./Order.Item.Erc20";
 
 export function OrderItem(props: {
   orderKey: string;
@@ -28,6 +29,9 @@ export function OrderItem(props: {
       {nft && <OrderItemNft orderKey={orderKey} nft={nft} />}
       {item.itemType === ItemType.NATIVE && (
         <OrderItemNative orderKey={orderKey} item={item} />
+      )}
+      {item.itemType === ItemType.ERC20 && (
+        <OrderItemErc20 orderKey={orderKey} item={item} />
       )}
     </div>
   );
