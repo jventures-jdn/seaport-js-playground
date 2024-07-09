@@ -8,10 +8,9 @@ import { OrderItemErc20 } from "./Order.Item.Erc20";
 
 export function OrderItem(props: {
   orderKey: string;
-  chainId: string;
   item: OfferItem | ConsiderationItem;
 }) {
-  const { orderKey, chainId, item } = props;
+  const { orderKey, item } = props;
   const { raw } = useOrder(orderKey);
   const nft = useMemo(() => {
     if (
@@ -25,6 +24,7 @@ export function OrderItem(props: {
       );
     }
   }, [item, raw.nfts]);
+  const recipient = (item as ConsiderationItem).recipient;
   return (
     <div>
       {nft && <OrderItemNft orderKey={orderKey} nft={nft} />}
@@ -32,7 +32,10 @@ export function OrderItem(props: {
         <OrderItemNative orderKey={orderKey} item={item} />
       )}
       {item.itemType === ItemType.ERC20 && (
-        <OrderItemErc20 orderKey={orderKey} chainId={chainId} item={item} />
+        <OrderItemErc20 orderKey={orderKey} chainId={raw.chainId} item={item} />
+      )}
+      {recipient && recipient !== raw.offerer && (
+        <div>Recipient : {recipient}</div>
       )}
     </div>
   );
