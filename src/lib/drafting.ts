@@ -19,10 +19,7 @@ type DraftingState = {
   updateCreateOrder: (id: string, data: CreateOrderDraft) => void;
   deleteCreateOrder: (id: string) => void;
   clearCreateOrders: () => void;
-  toCreateInputItem: (
-    draftItem: OrderItemDraft,
-    recipient?: string
-  ) => CreateInputItem;
+  toCreateInputItem: (draftItem: OrderItemDraft) => CreateInputItem;
 };
 
 type OrderItemDraft = {
@@ -30,22 +27,20 @@ type OrderItemDraft = {
   native_amount: number;
   erc20_contract: string;
   erc20_amount: number;
-  erc20_decimals: number;
+  erc20_decimals?: number;
   erc721_contract: string;
   erc721_id: string;
   erc1155_contract: string;
   erc1155_id: string;
   erc1155_amount: number;
+  consideration_recipient?: string;
 };
 
 export type CreateOrderDraft = {
   title: string;
   chainId: string;
   order: CreateOrderInput;
-  tempOrder: {
-    offer: OrderItemDraft[];
-    consideration: OrderItemDraft[];
-  };
+  tempOrder: { offer: OrderItemDraft[]; consideration: OrderItemDraft[] };
 };
 
 type FulfillOrderDraft = {
@@ -64,15 +59,16 @@ export const useDrafting = create<DraftingState>()(
         subscribeWithSelector((set, get) => ({
           createOrders: {},
           fulfillOrders: {},
-          toCreateInputItem: (item, recipient) => {
+          toCreateInputItem: (item) => {
             switch (item.type) {
               case ItemType.NATIVE:
                 const nativeAmount = ethers
                   .parseUnits(item.native_amount?.toString() || "0", 18)
                   .toString();
                 return {
+                  itemType: ItemType.NATIVE,
                   amount: nativeAmount,
-                  recipient,
+                  recipient: item.consideration_recipient,
                 };
               case ItemType.ERC20:
                 const erc20Amount = ethers
@@ -85,14 +81,14 @@ export const useDrafting = create<DraftingState>()(
                   itemType: ItemType.ERC20,
                   token: item.erc20_contract,
                   amount: erc20Amount,
-                  recipient,
+                  recipient: item.consideration_recipient,
                 };
               case ItemType.ERC721:
                 return {
                   itemType: ItemType.ERC721,
                   token: item.erc721_contract,
                   identifier: item.erc721_id,
-                  recipient,
+                  recipient: item.consideration_recipient,
                 };
               case ItemType.ERC1155:
                 return {
@@ -100,7 +96,7 @@ export const useDrafting = create<DraftingState>()(
                   token: item.erc1155_contract,
                   identifier: item.erc1155_id,
                   amount: item.erc1155_amount?.toString() || "1",
-                  recipient,
+                  recipient: item.consideration_recipient,
                 };
               default:
                 throw Error(`item type not supported : ${item.type}`);

@@ -161,7 +161,7 @@ const OrderItem = ({
       {item.type === ItemType.NATIVE && (
         <Form.Item
           name={[field.name, "native_amount"]}
-          style={{ marginLeft: 8 }}
+          style={{ marginLeft: 8, width: 200 }}
           required
         >
           <InputNumber
@@ -184,14 +184,14 @@ const OrderItem = ({
           </Form.Item>
           <Form.Item
             name={[field.name, "erc20_amount"]}
-            style={{ marginLeft: 8 }}
+            style={{ marginLeft: 8, width: 200 }}
             required
           >
             <Input addonBefore="Amount" required />
           </Form.Item>
           <Form.Item
             name={[field.name, "erc20_decimals"]}
-            style={{ marginLeft: 8 }}
+            style={{ marginLeft: 8, width: 122 }}
             required
           >
             <Input addonBefore="Decimals" defaultValue={18} />
@@ -210,7 +210,7 @@ const OrderItem = ({
           </Form.Item>
           <Form.Item
             name={[field.name, "erc721_id"]}
-            style={{ marginLeft: 8 }}
+            style={{ marginLeft: 8, width: 160 }}
             required
           >
             <Input addonBefore="ID" required />
@@ -240,6 +240,17 @@ const OrderItem = ({
             required
           >
             <InputNumber addonBefore="Amount" required />
+          </Form.Item>
+        </>
+      )}
+      {of === "consideration" && (
+        <>
+          <Form.Item
+            name={[field.name, "consideration_recipient"]}
+            style={{ marginLeft: 8 }}
+            required
+          >
+            <Input addonBefore="Recipient" />
           </Form.Item>
         </>
       )}
