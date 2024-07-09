@@ -56,10 +56,17 @@ export class Actions {
     };
   }
 
-  static async fulfill({ order }: { order: OrderWithCounter }) {
+  static async fulfill({
+    order,
+    recipient,
+  }: {
+    order: OrderWithCounter;
+    recipient?: string;
+  }) {
     const sp = await SeaportPlayground.init();
     const { actions } = await sp.seaport.fulfillOrder({
       order,
+      recipientAddress: recipient,
     });
     const transactions = [];
     for (const action of actions) {

@@ -1,13 +1,14 @@
 import { Button, Space, Tag, notification } from "antd";
 import { useOrder } from "../lib/order";
 
-export function OrderCancelButton(props: { orderKey: string }) {
+export function OrderCancelButton(props: { orderKey: string; style?: any }) {
   const [api, contextHolder] = notification.useNotification();
-  const { orderKey } = props;
+  const { orderKey, style } = props;
   const { cancel } = useOrder(orderKey);
   return (
     <Button
       danger
+      style={style}
       loading={cancel.isMutating}
       onClick={async () => {
         try {
