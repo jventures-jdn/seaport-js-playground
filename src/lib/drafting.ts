@@ -30,6 +30,7 @@ type OrderItemDraft = {
   native_amount: number;
   erc20_contract: string;
   erc20_amount: number;
+  erc20_decimals: number;
   erc721_contract: string;
   erc721_id: string;
   erc1155_contract: string;
@@ -67,16 +68,18 @@ export const useDrafting = create<DraftingState>()(
             switch (item.type) {
               case ItemType.NATIVE:
                 const nativeAmount = ethers
-                  .parseUnits(item.native_amount?.toString() || "0", "ether")
+                  .parseUnits(item.native_amount?.toString() || "0", 18)
                   .toString();
                 return {
                   amount: nativeAmount,
                   recipient,
                 };
               case ItemType.ERC20:
-                // TODO: don't hard-code erc20 decimals
                 const erc20Amount = ethers
-                  .parseUnits(item.erc20_amount?.toString() || "0", 18)
+                  .parseUnits(
+                    item.erc20_amount?.toString() || "0",
+                    Number(item.erc20_decimals) || 18
+                  )
                   .toString();
                 return {
                   itemType: ItemType.ERC20,

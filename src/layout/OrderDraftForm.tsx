@@ -189,6 +189,13 @@ const OrderItem = ({
           >
             <Input addonBefore="Amount" required />
           </Form.Item>
+          <Form.Item
+            name={[field.name, "erc20_decimals"]}
+            style={{ marginLeft: 8 }}
+            required
+          >
+            <Input addonBefore="Decimals" defaultValue={18} />
+          </Form.Item>
         </>
       )}
       {/* ERC721 */}
