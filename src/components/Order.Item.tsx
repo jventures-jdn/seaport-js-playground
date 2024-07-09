@@ -8,9 +8,10 @@ import { OrderItemErc20 } from "./Order.Item.Erc20";
 
 export function OrderItem(props: {
   orderKey: string;
+  chainId: string;
   item: OfferItem | ConsiderationItem;
 }) {
-  const { orderKey, item } = props;
+  const { orderKey, chainId, item } = props;
   const { raw } = useOrder(orderKey);
   const nft = useMemo(() => {
     if (
@@ -31,7 +32,7 @@ export function OrderItem(props: {
         <OrderItemNative orderKey={orderKey} item={item} />
       )}
       {item.itemType === ItemType.ERC20 && (
-        <OrderItemErc20 orderKey={orderKey} item={item} />
+        <OrderItemErc20 orderKey={orderKey} chainId={chainId} item={item} />
       )}
     </div>
   );

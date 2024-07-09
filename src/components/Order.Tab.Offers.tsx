@@ -8,7 +8,12 @@ export function OrderOffers(props: { orderKey: string }) {
   return (
     <Flex gap="middle" align="center" wrap="wrap">
       {order.order.parameters.offer.map((offer, i) => (
-        <OrderItem key={i} orderKey={orderKey} item={offer} />
+        <OrderItem
+          key={i}
+          orderKey={orderKey}
+          chainId={order.raw.chainId}
+          item={offer}
+        />
       ))}
     </Flex>
   );

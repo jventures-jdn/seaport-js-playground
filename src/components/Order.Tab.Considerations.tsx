@@ -8,7 +8,12 @@ export function OrderConsiderations(props: { orderKey: string }) {
   return (
     <Flex gap="middle" align="center" wrap="wrap">
       {order.order.parameters.consideration.map((consideration, i) => (
-        <OrderItem key={i} orderKey={orderKey} item={consideration} />
+        <OrderItem
+          key={i}
+          orderKey={orderKey}
+          chainId={order.raw.chainId}
+          item={consideration}
+        />
       ))}
     </Flex>
   );
