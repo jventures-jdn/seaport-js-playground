@@ -59,14 +59,18 @@ export class Actions {
   static async fulfill({
     order,
     recipient,
+    fulfiller,
   }: {
     order: OrderWithCounter;
     recipient?: string;
+    // custom seaport wrapper address to act as fulfiller
+    fulfiller?: string;
   }) {
-    const sp = await SeaportPlayground.init();
+    const sp = await SeaportPlayground.init(undefined, fulfiller);
     const { actions } = await sp.seaport.fulfillOrder({
       order,
       recipientAddress: recipient,
+      accountAddress: fulfiller,
     });
     const transactions = [];
     for (const action of actions) {

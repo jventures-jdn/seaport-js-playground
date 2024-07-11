@@ -2,6 +2,7 @@ import { Seaport } from "@opensea/seaport-js";
 import { CreateOrderInput } from "@opensea/seaport-js/lib/types";
 import { BrowserProvider, ethers } from "ethers";
 import { Blockchain } from "./blockchain";
+import { CROSS_CHAIN_SEAPORT_V1_5_ADDRESS } from "@opensea/seaport-js/lib/constants";
 
 export class SeaportPlayground {
   static async initReadonly(chainId: string) {
@@ -13,11 +14,22 @@ export class SeaportPlayground {
     return new SeaportPlayground(seaport, "", "", __provider as any);
   }
 
-  static async init(provider?: any) {
+  static async init(provider?: any, wrapperAddress?: string) {
     const _provider = provider || (window as any).ethereum;
     const __provider = new ethers.BrowserProvider(_provider);
     const signer = await __provider.getSigner();
-    const seaport = new Seaport(signer);
+    const seaport = new Seaport(
+      signer,
+      wrapperAddress
+        ? {
+            conduitKeyToConduit: {
+              "0x0000000000000000000000000000000000000000000000000000000000000000":
+                CROSS_CHAIN_SEAPORT_V1_5_ADDRESS,
+            },
+            overrides: { contractAddress: wrapperAddress },
+          }
+        : undefined
+    );
     const address = await signer.getAddress();
     const chainId = signer.provider._network.chainId.toString();
     return new SeaportPlayground(seaport, address, chainId, __provider);

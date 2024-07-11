@@ -30,8 +30,12 @@ export function useOrder(orderKey: string) {
 
   const fulfill = useSWRMutation(
     `orders/${orderKey}/fulfill`,
-    async (key, { arg: { recipient } }: { arg: { recipient?: string } }) =>
-      await Actions.fulfill({ order, recipient }),
+    async (
+      key,
+      {
+        arg: { recipient, fulfiller },
+      }: { arg: { recipient?: string; fulfiller?: string } }
+    ) => await Actions.fulfill({ order, recipient, fulfiller }),
     {
       onSuccess: async () => {
         // clear order status

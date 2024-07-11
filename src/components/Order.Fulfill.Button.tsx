@@ -4,9 +4,10 @@ import { useOrder } from "../lib/order";
 export function OrderFulfillButton(props: {
   orderKey: string;
   recipient?: string;
+  fulfiller?: string;
 }) {
   const [api, contextHolder] = notification.useNotification();
-  const { orderKey, recipient } = props;
+  const { orderKey, recipient, fulfiller } = props;
   const { fulfill } = useOrder(orderKey);
   return (
     <Button
@@ -14,7 +15,7 @@ export function OrderFulfillButton(props: {
       loading={fulfill.isMutating}
       onClick={async () => {
         try {
-          await fulfill.trigger({ recipient });
+          await fulfill.trigger({ recipient, fulfiller });
         } catch (e: any) {
           if (e.message?.startsWith("user rejected action")) return;
           api["error"]({

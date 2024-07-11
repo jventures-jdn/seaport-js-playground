@@ -8,6 +8,7 @@ import { useState } from "react";
 export function OrderAction(props: { orderKey: string }) {
   const { orderKey } = props;
   const [recipient, setRecipient] = useState<string>("");
+  const [fulfiller, setFulfiller] = useState<string>("");
   return (
     <Flex vertical gap="middle">
       <Flex gap="middle" flex={1}>
@@ -16,9 +17,15 @@ export function OrderAction(props: { orderKey: string }) {
           value={recipient}
           onChange={(e) => setRecipient(e.target.value)}
         />
+        <Input
+          placeholder="Fulfiller (Optional)"
+          value={fulfiller}
+          onChange={(e) => setFulfiller(e.target.value)}
+        />
         <OrderFulfillButton
           orderKey={orderKey}
           recipient={recipient || undefined}
+          fulfiller={fulfiller || undefined}
         />
       </Flex>
       <Flex gap="middle" flex={1}>
