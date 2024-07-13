@@ -13,6 +13,7 @@ export function OrderValidateButton(props: { orderKey: string; style?: any }) {
         try {
           await validate.trigger();
         } catch (e: any) {
+          console.log(e);
           if (e.message?.startsWith("user rejected action")) return;
           api["error"]({
             message: "Fail to validate order",

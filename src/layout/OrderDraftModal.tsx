@@ -87,6 +87,7 @@ export function OrderDraftModal({
                     setOpen(false);
                   }
                 } catch (e: any) {
+                  console.log(e);
                   if (e.message?.startsWith("user rejected action")) return;
                   api["error"]({
                     message: "Fail to create order",
