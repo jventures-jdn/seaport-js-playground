@@ -74,7 +74,7 @@ export const useDrafting = create<DraftingState>()(
                 const erc20Amount = ethers
                   .parseUnits(
                     item.erc20_amount?.toString() || "0",
-                    Number(item.erc20_decimals) || 18
+                    Number(item.erc20_decimals || 0) ?? 18
                   )
                   .toString();
                 return {

@@ -33,7 +33,7 @@ export class Tokens {
       ["function decimals() view returns (uint8)"],
       "decimals"
     );
-    return Number(result) || 18;
+    return Number(result) ?? 18;
   }
 
   static async nftUri(

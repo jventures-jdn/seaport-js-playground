@@ -45,7 +45,7 @@ export function OrderItemErc20(props: {
   }
   return (
     <Card size="small" style={{ fontSize: 18, width: 180 }}>
-      {ethers.formatUnits(item.startAmount, decimals || 18)}
+      {ethers.formatUnits(item.startAmount, decimals ?? 18)}
       <Tag color="gold" style={{ fontSize: 18, padding: 5, marginLeft: 5 }}>
         {symbol || item.token}
       </Tag>
