@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@opensea/seaport-js": "^3.0.2",
+    "@opensea/seaport-js": "3.0.2",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -13,7 +13,7 @@
     "@types/react-dom": "^18.2.18",
     "antd": "^5.14.0",
     "buffer": "^6.0.3",
-    "ethers": "^6.10.0",
+    "ethers": "6.13.0",
     "is-ipfs": "^8.0.4",
     "lodash.omit": "^4.5.0",
     "lru-cache": "^11.0.0",
